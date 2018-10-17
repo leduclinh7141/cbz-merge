@@ -96,7 +96,7 @@ class Comic:
             exit()
 
     def get_cbz_files(self):
-        getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0])[name.rfind("_c")+2:])
+        getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0])[name.rfind("r ")+2:])
         files = [f for f in os.listdir(self.parent_dir) if f.lower().endswith("cbz")]
         files.sort(key=getkey)
         if len(files) == 0:
@@ -106,7 +106,7 @@ class Comic:
             return files
 
     def get_image_files(self,dir):
-        getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0])[name.rfind("_p")+2:])
+        getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0]))
         files = [f for f in os.listdir(dir) if f.lower().endswith(".jpg") or f.lower.endswith(".png")]
         files.sort(key=getkey)
         logging.info("{} : {} files".format(dir,len(files)))
@@ -139,6 +139,10 @@ class Comic:
         logging.info("Renaming files to a sequence from temp dir")        
 
         for i in files:
+            if self.image_counter < 10: filename = "000" + str(self.image_counter) + ".jpg"
+            elif self.image_counter < 100: filename = "00" + str(self.image_counter) + ".jpg"
+            elif self.image_counter < 1000: filename = "0" + str(self.image_counter) + ".jpg"
+            else: filename = str(self.image_counter) + ".jpg"
             filename = str(self.image_counter) + ".jpg"
             oldfile = self.join_path(self.temp_dir,i)
             newfile = self.join_path(self.temp_dir,filename)
