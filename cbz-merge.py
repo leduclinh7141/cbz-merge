@@ -7,6 +7,7 @@ import logging
 import argparse
 import shutil
 import PIL.Image
+import re
 
 class Comic:
     def __init__(self):
@@ -82,6 +83,7 @@ class Comic:
         return self.seperator.join([arg for arg in args])
 
     def create_dir(self,dir):
+        # os.mkdir(dir)
         try:
             os.mkdir(dir)
         except FileExistsError:
@@ -96,7 +98,8 @@ class Comic:
             exit()
 
     def get_cbz_files(self):
-        getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0])[name.rfind("r ")+2:])
+        # getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0])[name.rfind("r ")+2:])
+        getkey = lambda name:  float(re.findall("[-+]?\d*\.\d+|\d+", os.path.basename(os.path.splitext(name)[0]))[0])
         files = [f for f in os.listdir(self.parent_dir) if f.lower().endswith("cbz")]
         files.sort(key=getkey)
         if len(files) == 0:
@@ -107,14 +110,14 @@ class Comic:
 
     def get_image_files(self,dir):
         getkey = lambda name: float(os.path.basename(os.path.splitext(name)[0]))
-        files = [f for f in os.listdir(dir) if f.lower().endswith(".jpg") or f.lower.endswith(".png")]
+        files = [f for f in os.listdir(dir) if f.lower().endswith(".jpg") or f.lower().endswith(".png") or f.lower().endswith(".jpeg") or f.lower().endswith(".gif")]
         files.sort(key=getkey)
         logging.info("{} : {} files".format(dir,len(files)))
         return files
 
 
     def list_image(self,dir):
-        files = [f for f in os.listdir(dir) if f.lower().endswith(".jpg") or f.lower.endswith(".png")]
+        files = [f for f in os.listdir(dir) if f.lower().endswith(".jpg") or f.lower().endswith(".png") or f.lower().endswith(".jpeg") or f.lower().endswith(".gif")]
         files.sort(key=lambda name: int(os.path.basename(os.path.splitext(name)[0])))
         return files
 
@@ -143,7 +146,7 @@ class Comic:
             elif self.image_counter < 100: filename = "00" + str(self.image_counter) + ".jpg"
             elif self.image_counter < 1000: filename = "0" + str(self.image_counter) + ".jpg"
             else: filename = str(self.image_counter) + ".jpg"
-            filename = str(self.image_counter) + ".jpg"
+            #filename = str(self.image_counter) + ".jpg"
             oldfile = self.join_path(self.temp_dir,i)
             newfile = self.join_path(self.temp_dir,filename)
             os.rename(oldfile,newfile)
