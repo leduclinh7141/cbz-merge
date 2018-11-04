@@ -111,6 +111,8 @@ venv.bak/
 dmypy.json
 
 # cbz
+*.mobi
+*.epub
 *.cbz
 *.img
 *.zip
