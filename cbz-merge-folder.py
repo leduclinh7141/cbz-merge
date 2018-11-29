@@ -177,13 +177,27 @@ class Comic:
             os.rename(oldpath,newpath)
         logging.info("Moved the files to output directory")
 
+    # def chunks(self, l, n):
+    #     # For item i in a range that is a length of l,
+    #     for i in range(0, len(l), n):
+    #         # Create an index range for l of n items:
+    #         yield l[i:i+n]
+
+    def chunk(self, xs, n):
+        '''Split the list, xs, into n chunks'''
+        L = len(xs)
+        assert 0 < n <= L
+        s = L//n
+        return [xs[p:p+s] for p in range(0, L, s)]
+
     def create_cbz(self):
         print("\n[+] Creating cbz file")
+        
         self.filename = os.path.basename(self.parent_dir)+".cbz"
         cbz = zipfile.ZipFile(self.filename,mode="w")
 
         filelist = self.list_image(self.output_dir)
-
+        listSplit = chunk(filelist, 400)
         for i in filelist:
             filename = self.join_path(self.output_dir,i)
             cbz.write(filename)
