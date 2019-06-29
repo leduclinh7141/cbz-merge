@@ -197,12 +197,12 @@ class Comic:
         cbz = zipfile.ZipFile(self.filename,mode="w")
 
         filelist = self.list_image(self.output_dir)
-        listSplit = chunk(filelist, 400)
+        #listSplit = chunk(filelist, 400)
         for i in filelist:
             filename = self.join_path(self.output_dir,i)
             cbz.write(filename)
             sys.stdout.write("[+] Writing "+i+"\r")
-
+        #i = 0
         cbz.close()
         print("\n[+] {} Written to disk".format(self.filename))
 
