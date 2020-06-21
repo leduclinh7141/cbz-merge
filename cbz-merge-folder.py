@@ -6,7 +6,7 @@ import sys
 import logging
 import argparse
 import shutil
-import PIL.Image
+from PIL import Image
 import re
 
 class Comic:
@@ -152,8 +152,8 @@ class Comic:
                 im.verify()
             except Exception as e:
                 logging.debug(str(e)+jpg)
-                print("[!] File {} is corrupted".format(jpg))
-                os.remove(self.join_path(self.temp_dir,jpg))
+                # print("[!] File {} is corrupted".format(jpg))
+                # os.remove(self.join_path(self.temp_dir,jpg))
 
     def move_image(self,files):
         logging.info("Renaming files to a sequence from temp dir")        
